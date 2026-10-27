@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #070c18;
+    color: #e2e8f0;
+  }
+}
+
+/* Custom dark theme glow and cyberpunk accent classes */
+.ziki-panel {
+  background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.75)), #0b1329;
+  border: 1px solid rgba(56, 189, 248, 0.12);
+  box-shadow: 0 10px 30px -10px rgba(2, 6, 23, 0.8), 0 0 20px -5px rgba(59, 130, 246, 0.1);
+}
+
+.ziki-panel-glow {
+  background: radial-gradient(circle at top, rgba(37, 99, 235, 0.12), rgba(11, 19, 41, 0.95)), #0b1329;
+  border: 1px solid rgba(96, 165, 250, 0.25);
+  box-shadow: 0 0 35px -5px rgba(37, 99, 235, 0.25), 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+}
+
+.glow-blue {
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Futuristic grid overlay background */
+.cyber-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Subtle holographic pulse */
+@keyframes shield-pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 22px rgba(56, 189, 248, 0.8));
+  }
+}
+
+.animate-shield-pulse {
+  animation: shield-pulse 3s ease-in-out infinite;
+}
+
+/* Data stream animation */
+@keyframes data-flow {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-data-flow {
+  animation: data-flow 2.5s ease-in-out infinite;
+}
+
+/* Float animation */
+@keyframes soft-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-soft-float {
+  animation: soft-float 4s ease-in-out infinite;
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shield-pulse,
+  .animate-data-flow,
+  .animate-soft-float,
+  .animate-spin,
+  .animate-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
