@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   ArrowUpRight, 
   Plus, 
@@ -12,11 +12,14 @@ import {
   TrendingUp,
   ShieldCheck,
   Bot,
-  Layers
+  Layers,
+  Zap,
+  ArrowRight
 } from 'lucide-react';
+import { WhimsicalAgentGraphic } from '../whimsical/WhimsicalAgentGraphic';
 
 interface ZikiDashboardProps {
-  onLaunchOnboarding: () => void;
+  onLaunchOnboarding: (goalId?: string) => void;
   activeInitiativesCount?: number;
 }
 
@@ -24,13 +27,15 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
   onLaunchOnboarding,
   activeInitiativesCount = 0
 }) => {
+  const [selectedChartRange, setSelectedChartRange] = useState<'Daily' | 'Weekly' | 'Monthly' | 'Yearly'>('Weekly');
+
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8 animate-fadeIn">
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8 animate-fade-in-up">
       
-      {/* Header section with Welcome & New Issue / Goal CTA */}
+      {/* Top Header section with Welcome & Goal CTA */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-sans">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white font-sans">
             Welcome back, wisdom
           </h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -41,57 +46,72 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={onLaunchOnboarding}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-102 active:scale-98"
+            onClick={() => onLaunchOnboarding('improve')}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-[0_0_25px_rgba(37,99,235,0.4)] transition-all hover:scale-105 active:scale-95 group"
           >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
+            <Sparkles className="w-4 h-4 text-cyan-200 animate-pulse" />
             <span>+ New Issue / Goal Initiative</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
           </button>
         </div>
       </div>
 
-      {/* Feature Spotlight Callout: Goal-First Onboarding */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-950/60 via-slate-900/90 to-indigo-950/60 border border-blue-500/30 p-5 shadow-xl">
-        <div className="absolute -right-12 -top-12 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
-          <div className="space-y-1 max-w-2xl">
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
-                PROPOSED IMPROVEMENT DEMO
-              </span>
-              <span className="text-xs text-slate-400">· Human-Agent Interaction</span>
+      {/* Hero Feature Spotlight: Goal-First Agent Onboarding with Living Whimsical Mascot */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-blue-950/70 via-slate-900/95 to-[#0b1329] border border-blue-500/40 p-6 sm:p-8 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
+        {/* Ambient Top Glow */}
+        <div className="absolute top-0 right-1/4 w-96 h-48 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-72 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 space-y-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-slate-800/80 pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-blue-500/20 text-cyan-300 border border-cyan-400/30 shadow-sm animate-pulse">
+                  PROPOSED FEATURE DEMO
+                </span>
+                <span className="text-xs text-slate-400 font-mono">· Human–Agent Interaction</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                Goal-First Agent Onboarding
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Clients no longer need to know which agents they need or how to organize them. Describe your high-level goal, review a simulated AI-generated Project Brief with explicit human approval checkpoints, and watch the collaborative agent squad execute safely.
+              </p>
             </div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              Goal-First Agent Onboarding
-            </h2>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Instead of guessing which agents you need, state your high-level goal (Security, Marketing, Product Building, or System Refinement). Review a structured AI project brief, customize tasks, approve deliverables, and inspect deterministic multi-agent collaboration in action.
-            </p>
+
+            <div className="flex flex-wrap items-center gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => onLaunchOnboarding('security')}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-xs shadow-[0_0_25px_rgba(37,99,235,0.5)] transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <Bot className="w-4 h-4 text-cyan-200" />
+                <span>Launch Goal-First Onboarding</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={onLaunchOnboarding}
-            className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-slate-950 font-semibold text-xs shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-transform hover:scale-105 active:scale-95"
-          >
-            <Bot className="w-4 h-4 text-slate-950" />
-            <span>Launch Goal Onboarding</span>
-          </button>
+
+          {/* Whimsical Living Mascot & Interactive Highlights */}
+          <div className="pt-2">
+            <WhimsicalAgentGraphic />
+          </div>
         </div>
       </div>
 
-      {/* 4 Overview Metric Cards (Exact match to Ziki screenshot) */}
+      {/* 4 Overview Metric Cards (Exact match to Ziki screenshot with smooth hover) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Points Card */}
-        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-slate-700/80 transition-all flex flex-col justify-between">
+        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-blue-500/50 hover:bg-slate-900/80 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
             <span>Points</span>
-            <div className="w-6 h-6 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400">
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400 group-hover:text-blue-400 group-hover:scale-110 transition-all">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight">
+            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-cyan-200 transition-colors">
               7871.42
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
@@ -104,15 +124,15 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
         </div>
 
         {/* Created by me */}
-        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-slate-700/80 transition-all flex flex-col justify-between">
+        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-emerald-500/50 hover:bg-slate-900/80 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
             <span>Created by me</span>
-            <div className="w-6 h-6 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400">
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400 group-hover:text-emerald-400 group-hover:scale-110 transition-all">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight">
+            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-emerald-300 transition-colors">
               45
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
@@ -125,15 +145,15 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
         </div>
 
         {/* Assigned to me */}
-        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-slate-700/80 transition-all flex flex-col justify-between">
+        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-amber-500/50 hover:bg-slate-900/80 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
             <span>Assigned to me</span>
-            <div className="w-6 h-6 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400">
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400 group-hover:text-amber-400 group-hover:scale-110 transition-all">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight">
+            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-amber-300 transition-colors">
               1
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
@@ -144,19 +164,21 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
         </div>
 
         {/* Resolved issues */}
-        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-slate-700/80 transition-all flex flex-col justify-between">
+        <div className="p-5 rounded-2xl bg-[#0b1329] border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-900/80 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group shadow-lg">
           <div className="flex items-center justify-between text-slate-400 text-xs font-medium">
             <span>Resolved issues</span>
-            <div className="w-6 h-6 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400">
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            <div className="w-7 h-7 rounded-lg bg-slate-800/80 flex items-center justify-center text-slate-400 group-hover:text-purple-400 group-hover:scale-110 transition-all">
+              <ArrowUpRight className="w-4 h-4" />
             </div>
           </div>
           <div className="mt-3">
-            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight">
-              0
+            <div className="text-2xl lg:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-purple-300 transition-colors">
+              {activeInitiativesCount}
             </div>
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
-              <span className="font-mono text-slate-300 font-bold">0%</span>
+              <span className="font-mono text-slate-300 font-bold">
+                {activeInitiativesCount > 0 ? '100%' : '0%'}
+              </span>
               <span>of issues assigned to me</span>
             </div>
           </div>
@@ -164,8 +186,8 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
 
       </div>
 
-      {/* Issues Assigned to Me Table (matching Ziki screenshot) */}
-      <div className="rounded-2xl bg-[#0b1329] border border-slate-800/80 overflow-hidden shadow-lg">
+      {/* Issues Assigned to Me Table */}
+      <div className="rounded-2xl bg-[#0b1329] border border-slate-800/80 overflow-hidden shadow-xl">
         <div className="px-6 py-4 border-b border-slate-800/80 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h3 className="text-sm font-semibold text-white">
@@ -198,20 +220,20 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-slate-300">
-              <tr className="hover:bg-slate-900/30 transition-colors">
+              <tr className="hover:bg-slate-900/40 transition-colors group">
                 <td className="py-4 px-6">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/20 border border-blue-500/40 text-blue-400 w-fit font-mono font-semibold">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/20 border border-blue-500/40 text-blue-400 w-fit font-mono font-semibold group-hover:scale-105 transition-transform">
                     <span className="text-[10px]">▲</span>
                     <span>11</span>
                   </div>
                 </td>
                 <td className="py-4 px-6">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center text-slate-400">
+                    <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-blue-400 transition-colors">
                       <Layers className="w-3.5 h-3.5 text-blue-400" />
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-100 hover:text-blue-400 cursor-pointer">
+                      <p className="font-semibold text-slate-100 group-hover:text-blue-300 transition-colors cursor-pointer">
                         [Desktop]: Channel create/edit dialogs close before re...
                       </p>
                       <div className="flex items-center gap-2 text-slate-500 text-[11px] mt-0.5">
@@ -253,8 +275,8 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
         </div>
       </div>
 
-      {/* Your Points Chart Section (matching Ziki screenshot) */}
-      <div className="rounded-2xl bg-[#0b1329] border border-slate-800/80 p-6 space-y-4">
+      {/* Your Points Chart Section */}
+      <div className="rounded-2xl bg-[#0b1329] border border-slate-800/80 p-6 space-y-4 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-sm font-semibold text-white">Your points</h3>
@@ -269,15 +291,25 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
               <ChevronDown className="w-3 h-3 text-slate-400" />
             </div>
             <div className="flex items-center rounded-lg border border-slate-800 bg-slate-900/60 p-0.5 text-xs text-slate-400">
-              <button type="button" className="px-2.5 py-1 rounded text-slate-300">Daily</button>
-              <button type="button" className="px-2.5 py-1 rounded bg-blue-600/20 text-blue-400 font-medium border border-blue-500/30">Weekly</button>
-              <button type="button" className="px-2.5 py-1 rounded text-slate-300">Monthly</button>
-              <button type="button" className="px-2.5 py-1 rounded text-slate-300">Yearly</button>
+              {(['Daily', 'Weekly', 'Monthly', 'Yearly'] as const).map((r) => (
+                <button 
+                  key={r}
+                  type="button" 
+                  onClick={() => setSelectedChartRange(r)}
+                  className={`px-2.5 py-1 rounded transition-colors ${
+                    selectedChartRange === r 
+                      ? 'bg-blue-600/25 text-blue-300 font-medium border border-blue-500/40 shadow-sm' 
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {r}
+                </button>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Visualized points graph mock */}
+        {/* Points bar graph with smooth hover interaction */}
         <div className="pt-2 flex items-end justify-between gap-2 h-28 border-b border-slate-800/80 pb-2">
           {[
             { week: 'W1', pts: 420, met: false },
@@ -289,21 +321,21 @@ export const ZikiDashboard: React.FC<ZikiDashboardProps> = ({
             { week: 'W7', pts: 1100, met: true },
             { week: 'W8', pts: 1450, met: true },
           ].map((bar, i) => (
-            <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
+            <div key={i} className="flex-1 flex flex-col items-center gap-2 group cursor-pointer">
               <div className="relative w-full flex justify-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity absolute -top-6 text-[10px] font-mono text-cyan-300 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700">
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-y-1 group-hover:translate-y-0 absolute -top-6 text-[10px] font-mono text-cyan-300 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-700 shadow-md">
                   {bar.pts} pts
                 </span>
                 <div 
-                  className={`w-full max-w-[28px] rounded-t-md transition-all ${
+                  className={`w-full max-w-[28px] rounded-t-md transition-all duration-300 ${
                     bar.met 
-                      ? 'bg-gradient-to-t from-blue-700 to-blue-500 group-hover:from-blue-600 group-hover:to-cyan-400' 
+                      ? 'bg-gradient-to-t from-blue-700 to-blue-500 group-hover:from-blue-600 group-hover:to-cyan-400 group-hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]' 
                       : 'bg-slate-700 group-hover:bg-slate-600'
                   }`}
                   style={{ height: `${(bar.pts / 1500) * 80 + 15}px` }}
                 />
               </div>
-              <span className="text-[10px] font-mono text-slate-500">{bar.week}</span>
+              <span className="text-[10px] font-mono text-slate-500 group-hover:text-slate-300 transition-colors">{bar.week}</span>
             </div>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -7,10 +7,11 @@ import {
   Globe, 
   Users, 
   Target, 
-  Code, 
-  Layers, 
-  CheckCircle,
-  HelpCircle
+  Bot, 
+  Zap, 
+  Cpu, 
+  CheckCircle2, 
+  Layers 
 } from 'lucide-react';
 import { GoalId } from '../../../types/onboarding';
 
@@ -32,6 +33,25 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
   isGenerating
 }) => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [thinkingStage, setThinkingStage] = useState(0);
+
+  const thinkingMessages = [
+    "Analyzing goal parameters and boundary constraints...",
+    "Matching specialist agent capabilities (Orion, Nova, Vanguard, Cipher, Atlas)...",
+    "Structuring atomic work graph and human-gate checkpoints...",
+    "Finalizing interactive project brief..."
+  ];
+
+  useEffect(() => {
+    if (!isGenerating) {
+      setThinkingStage(0);
+      return;
+    }
+    const interval = setInterval(() => {
+      setThinkingStage((prev) => (prev < thinkingMessages.length - 1 ? prev + 1 : prev));
+    }, 450);
+    return () => clearInterval(interval);
+  }, [isGenerating]);
 
   const handleFieldChange = (key: string, value: any) => {
     onUpdateFormData({
@@ -112,12 +132,41 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
   };
 
   return (
-    <form data-testid="context-form" onSubmit={handleSubmit} className="space-y-6 animate-fadeIn">
+    <form data-testid="context-form" onSubmit={handleSubmit} className="space-y-6 animate-fade-in-up relative">
       
+      {/* Animated AI Thinking & Planning Overlay */}
+      {isGenerating && (
+        <div className="absolute inset-0 z-30 rounded-2xl bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fade-in-up">
+          <div className="relative mb-5">
+            <div className="w-16 h-16 rounded-2xl bg-blue-600/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300 shadow-[0_0_35px_rgba(6,182,212,0.4)] animate-bounce">
+              <Cpu className="w-8 h-8 text-cyan-300 animate-pulse" />
+            </div>
+            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cyan-400 animate-ping" />
+          </div>
+
+          <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <span>AI Squad Coordinator Synthesizing Brief</span>
+          </h3>
+
+          <p className="text-xs text-cyan-300 font-mono max-w-md h-6 mb-5 transition-all">
+            {thinkingMessages[thinkingStage]}
+          </p>
+
+          <div className="w-full max-w-xs h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+            <div 
+              className="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500 transition-all duration-300"
+              style={{ width: `${((thinkingStage + 1) / thinkingMessages.length) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono font-medium mb-1.5">
+            <Zap className="w-3.5 h-3.5 text-cyan-400" />
             <span>Step 2 of 5</span>
             <span>·</span>
             <span>Provide Relevant Context</span>
@@ -133,7 +182,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
         <button
           type="button"
           onClick={loadExampleData}
-          className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-medium transition-colors"
+          className="shrink-0 flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-medium transition-all hover:scale-102"
         >
           <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
           <span>Pre-fill Example Data</span>
@@ -146,22 +195,22 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
         {/* ================= WEBSITE SECURITY FORM ================= */}
         {selectedGoal === 'security' && (
           <>
-            <div>
+            <div className="group">
               <label className="block text-xs font-semibold text-slate-200 uppercase tracking-wider mb-1.5">
                 Target Asset URL or Hostname <span className="text-rose-400">*</span>
               </label>
               <div className="relative">
-                <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors" />
                 <input
                   type="text"
                   placeholder="https://app.yourdomain.com or api.yourdomain.com"
                   value={formData.assetUrl || ''}
                   onChange={(e) => handleFieldChange('assetUrl', e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all font-mono"
                 />
               </div>
               {formErrors.assetUrl && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.assetUrl}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.assetUrl}</p>
               )}
             </div>
 
@@ -180,10 +229,10 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                     key={scope}
                     type="button"
                     onClick={() => handleFieldChange('assessmentScope', scope)}
-                    className={`p-3 rounded-xl border text-left text-xs font-medium transition-all ${
+                    className={`p-3 rounded-xl border text-left text-xs font-medium transition-all duration-200 ${
                       (formData.assessmentScope || 'Full Surface & OWASP Top 10') === scope
-                        ? 'bg-blue-600/20 border-blue-400/60 text-white shadow-[0_0_12px_rgba(59,130,246,0.2)]'
-                        : 'bg-[#0b1329] border-slate-800 text-slate-300 hover:border-slate-700'
+                        ? 'bg-blue-600/25 border-blue-400/80 text-white shadow-[0_0_15px_rgba(59,130,246,0.3)] ring-1 ring-blue-400'
+                        : 'bg-[#0b1329] border-slate-800 text-slate-300 hover:border-slate-700 hover:bg-slate-900/60'
                     }`}
                   >
                     {scope}
@@ -201,11 +250,11 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="security-oncall@yourdomain.com"
                 value={formData.emergencyContact || ''}
                 onChange={(e) => handleFieldChange('emergencyContact', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 transition-all"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-900/60 border border-blue-500/20 flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-slate-900/70 border border-blue-500/25 flex items-start gap-3 hover:border-blue-500/40 transition-colors">
               <input
                 id="auth-check"
                 type="checkbox"
@@ -213,13 +262,13 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 onChange={(e) => handleFieldChange('authorizationConfirmed', e.target.checked)}
                 className="mt-1 w-4 h-4 rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-blue-500"
               />
-              <label htmlFor="auth-check" className="text-xs text-slate-300 leading-relaxed cursor-pointer">
+              <label htmlFor="auth-check" className="text-xs text-slate-300 leading-relaxed cursor-pointer select-none">
                 <span className="font-semibold text-white block">Authorization Confirmation</span>
                 I attest that our organization owns or holds explicit authorization to execute non-destructive diagnostic assessments against this target.
               </label>
             </div>
             {formErrors.authorizationConfirmed && (
-              <p className="text-rose-400 text-xs mt-1">{formErrors.authorizationConfirmed}</p>
+              <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.authorizationConfirmed}</p>
             )}
           </>
         )}
@@ -238,11 +287,11 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                   placeholder="https://yourproduct.com"
                   value={formData.websiteUrl || ''}
                   onChange={(e) => handleFieldChange('websiteUrl', e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 font-mono transition-all"
                 />
               </div>
               {formErrors.websiteUrl && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.websiteUrl}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.websiteUrl}</p>
               )}
             </div>
 
@@ -257,11 +306,11 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                   placeholder="e.g. Series-A CTOs, DevOps engineers, SMB founders"
                   value={formData.targetAudience || ''}
                   onChange={(e) => handleFieldChange('targetAudience', e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
                 />
               </div>
               {formErrors.targetAudience && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.targetAudience}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.targetAudience}</p>
               )}
             </div>
 
@@ -276,11 +325,11 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                   placeholder="e.g. 40% growth in organic qualified leads; rank Top 3 for key terms"
                   value={formData.primaryGoal || ''}
                   onChange={(e) => handleFieldChange('primaryGoal', e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
                 />
               </div>
               {formErrors.primaryGoal && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.primaryGoal}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.primaryGoal}</p>
               )}
             </div>
 
@@ -293,7 +342,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="e.g. Pragmatic, approachable, engineering-focused"
                 value={formData.brandVoice || ''}
                 onChange={(e) => handleFieldChange('brandVoice', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 transition-all"
               />
             </div>
           </>
@@ -311,10 +360,10 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="What is your product vision, and what primary problem does it solve?"
                 value={formData.productIdea || ''}
                 onChange={(e) => handleFieldChange('productIdea', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
               {formErrors.productIdea && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.productIdea}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.productIdea}</p>
               )}
             </div>
 
@@ -327,10 +376,10 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="e.g. Remote design agencies and cross-functional product squads"
                 value={formData.targetUsers || ''}
                 onChange={(e) => handleFieldChange('targetUsers', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
               {formErrors.targetUsers && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.targetUsers}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.targetUsers}</p>
               )}
             </div>
 
@@ -343,7 +392,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="e.g. Real-time collaboration, canvas zoom, PDF export, SSO"
                 value={formData.essentialFeatures || ''}
                 onChange={(e) => handleFieldChange('essentialFeatures', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 transition-all"
               />
             </div>
           </>
@@ -361,10 +410,10 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="https://github.com/your-org/repo or https://staging.app.com"
                 value={formData.repoOrSiteUrl || ''}
                 onChange={(e) => handleFieldChange('repoOrSiteUrl', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500 font-mono"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 font-mono transition-all"
               />
               {formErrors.repoOrSiteUrl && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.repoOrSiteUrl}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.repoOrSiteUrl}</p>
               )}
             </div>
 
@@ -377,10 +426,10 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 placeholder="Describe the bug, slow endpoint, or usability friction you want resolved..."
                 value={formData.issueDescription || ''}
                 onChange={(e) => handleFieldChange('issueDescription', e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30 transition-all"
               />
               {formErrors.issueDescription && (
-                <p className="text-rose-400 text-xs mt-1">{formErrors.issueDescription}</p>
+                <p className="text-rose-400 text-xs mt-1 animate-fade-in-up">{formErrors.issueDescription}</p>
               )}
             </div>
 
@@ -394,7 +443,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                   placeholder="e.g. Under 1.5s mobile LCP, 0 crash rate"
                   value={formData.desiredOutcome || ''}
                   onChange={(e) => handleFieldChange('desiredOutcome', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 transition-all"
                 />
               </div>
 
@@ -405,7 +454,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
                 <select
                   value={formData.priorityLevel || 'High'}
                   onChange={(e) => handleFieldChange('priorityLevel', e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-500"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0b1329] border border-slate-800 text-slate-100 text-sm focus:outline-none focus:border-blue-400 transition-all"
                 >
                   <option value="High">High (Immediate sprint action)</option>
                   <option value="Medium">Medium (Scheduled milestone)</option>
@@ -423,7 +472,7 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs font-medium transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 text-xs font-medium transition-all hover:scale-102"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Change Goal</span>
@@ -434,22 +483,12 @@ export const StepBContextForm: React.FC<StepBContextFormProps> = ({
           disabled={isGenerating}
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-xs shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all hover:scale-102 active:scale-98 disabled:opacity-60"
         >
-          {isGenerating ? (
-            <>
-              <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-              <span>Generating Project Brief...</span>
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
-              <span>Generate AI Project Brief</span>
-              <ArrowRight className="w-4 h-4" />
-            </>
-          )}
+          <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
+          <span>Generate AI Project Brief</span>
+          <ArrowRight className="w-4 h-4 ml-0.5" />
         </button>
       </div>
 
     </form>
   );
 };
-
