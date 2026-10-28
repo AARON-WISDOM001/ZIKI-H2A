@@ -1,14 +1,13 @@
 import React from 'react';
 import { 
-  CheckCircle2, 
-  Clock, 
   Terminal, 
   HelpCircle, 
   MessageSquare, 
   ShieldCheck, 
   Activity,
   GitCommit,
-  Radio
+  Radio,
+  Clock
 } from 'lucide-react';
 import { TimelineEvent } from '../../types/localAgent';
 
@@ -22,68 +21,68 @@ export const AgentActivityTimeline: React.FC<AgentActivityTimelineProps> = ({
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'connection':
-        return <Terminal className="w-3.5 h-3.5 text-blue-400" />;
+        return <Terminal className="w-3.5 h-3.5 text-blue-600" />;
       case 'task':
-        return <Activity className="w-3.5 h-3.5 text-emerald-400" />;
+        return <Activity className="w-3.5 h-3.5 text-emerald-600" />;
       case 'clarification':
-        return <HelpCircle className="w-3.5 h-3.5 text-amber-400" />;
+        return <HelpCircle className="w-3.5 h-3.5 text-amber-600" />;
       case 'human_input':
-        return <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />;
+        return <MessageSquare className="w-3.5 h-3.5 text-blue-600" />;
       case 'approval':
-        return <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />;
+        return <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />;
       default:
-        return <GitCommit className="w-3.5 h-3.5 text-slate-400" />;
+        return <GitCommit className="w-3.5 h-3.5 text-slate-500" />;
     }
   };
 
   return (
-    <div className="rounded-3xl bg-[#0b1329] border border-slate-800/90 p-5 sm:p-6 shadow-xl space-y-5 animate-fade-in-up">
+    <div className="rounded-2xl bg-white border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4 animate-fade-in-up">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-purple-300">
+          <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
             <Radio className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs sm:text-sm font-bold text-white tracking-tight">
+            <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
               Agent Activity Timeline
             </h3>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-slate-500">
               Synchronized log of local terminal actions and human directives
             </p>
           </div>
         </div>
 
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 border border-slate-700 text-slate-400">
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600">
           Live Stream
         </span>
       </div>
 
       {/* Timeline List */}
-      <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-[1px] before:bg-gradient-to-b before:from-cyan-400 before:via-blue-500 before:to-slate-800">
+      <div className="relative pl-6 space-y-5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-200">
         {events.map((evt) => (
           <div key={evt.id} className="relative group">
             {/* Timeline node icon */}
-            <div className="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-[#070c18] border border-slate-700 flex items-center justify-center group-hover:border-cyan-400 group-hover:scale-110 transition-all shadow-md">
+            <div className="absolute -left-6 top-0.5 w-5 h-5 rounded-full bg-white border border-slate-300 flex items-center justify-center group-hover:border-blue-500 transition-all shadow-2xs">
               {getCategoryIcon(evt.category)}
             </div>
 
             <div className="space-y-1">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
+                <span className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
                   {evt.title}
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-cyan-400">
+                  <span className="text-[9px] font-mono px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-slate-600 font-medium">
                     {evt.badge}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-500">
+                  <span className="text-[10px] font-mono text-slate-400">
                     {evt.timestamp}
                   </span>
                 </div>
               </div>
 
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
+              <p className="text-xs text-slate-600 leading-relaxed font-sans">
                 {evt.description}
               </p>
             </div>
@@ -92,12 +91,11 @@ export const AgentActivityTimeline: React.FC<AgentActivityTimelineProps> = ({
       </div>
 
       {/* Prototype Footer Note */}
-      <div className="pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center gap-1.5 font-mono">
-        <Clock className="w-3.5 h-3.5 text-slate-500" />
+      <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1.5 font-mono">
+        <Clock className="w-3.5 h-3.5 text-slate-400" />
         <span>Design simulation only. Terminal commands and events are mocked locally.</span>
       </div>
 
     </div>
   );
 };
-

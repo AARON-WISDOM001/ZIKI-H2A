@@ -9,7 +9,7 @@ import { GoalId } from './types/onboarding';
 import { Sparkles, Terminal, Shield, Megaphone, Layers, Bot, X } from 'lucide-react';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('my-agents'); // Default to My Agents page matching screenshot
+  const [activeTab, setActiveTab] = useState<ActiveTab>('my-agents'); // Default to My Agents page
   const [isAgentControlModalOpen, setIsAgentControlModalOpen] = useState(false);
   const [selectedAgentName, setSelectedAgentName] = useState('KDB (Reviewer)');
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
@@ -43,7 +43,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 relative selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 relative selection:bg-blue-600 selection:text-white font-sans">
       
       {/* Top Navbar matching Ziki */}
       <Navbar
@@ -60,13 +60,13 @@ export function App() {
 
       {/* Floating Live Points Award Toast */}
       {pointsNotification && (
-        <div className="fixed top-20 right-6 z-50 p-4 rounded-2xl bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 border border-emerald-400/60 shadow-[0_0_35px_rgba(16,185,129,0.35)] animate-fade-in-up flex items-center gap-3 text-xs text-white">
-          <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300">
-            <Sparkles className="w-4 h-4 text-emerald-300 animate-spin" />
+        <div className="fixed top-20 right-6 z-50 p-4 rounded-2xl bg-white border border-emerald-300 shadow-lg animate-fade-in-up flex items-center gap-3 text-xs text-slate-800">
+          <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+            <Sparkles className="w-4 h-4 animate-spin" />
           </div>
           <div>
-            <span className="font-bold block">Ziki Points Credited</span>
-            <span className="text-emerald-300 font-mono">{pointsNotification}</span>
+            <span className="font-bold text-slate-900 block">Ziki Points Credited</span>
+            <span className="text-emerald-700 font-mono font-medium">{pointsNotification}</span>
           </div>
         </div>
       )}
@@ -84,9 +84,9 @@ export function App() {
           />
         )}
 
-        {/* Dedicated Local Agent Control View */}
+        {/* Dedicated Local Agent Control View (Light Mode) */}
         {activeTab === 'local-agent' && (
-          <div className="bg-[#070c18] text-slate-100 min-h-screen py-4">
+          <div className="bg-[#f8fafc] text-slate-900 min-h-screen py-4">
             <LocalAgentDashboard
               onBackToOverview={() => setActiveTab('my-agents')}
               onLaunchGoalOnboarding={() => handleLaunchWithGoal('security')}
@@ -118,7 +118,7 @@ export function App() {
         {/* Marketing Hub View */}
         {activeTab === 'marketing' && (
           <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-6 animate-fade-in-up">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-600/15 border border-purple-500/40 flex items-center justify-center text-purple-600 shadow-sm">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 shadow-xs">
               <Megaphone className="w-8 h-8" />
             </div>
             <div className="space-y-2 max-w-xl mx-auto">
@@ -139,27 +139,27 @@ export function App() {
 
       </main>
 
-      {/* Interactive Local Agent Control Modal / Drawer (Triggered by 'Messages and instructions' or 'Activity & Approvals') */}
+      {/* Light Mode Local Agent Control Modal (Triggered by 'Messages and instructions' or 'Activity & Approvals') */}
       {isAgentControlModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-fade-in-up">
-          <div className="relative w-full max-w-6xl my-auto rounded-3xl bg-[#070c18] text-slate-100 border border-blue-500/30 shadow-[0_0_60px_rgba(37,99,235,0.25)] overflow-hidden flex flex-col max-h-[94vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-slate-900/50 backdrop-blur-sm overflow-y-auto animate-fade-in-up">
+          <div className="relative w-full max-w-6xl my-auto rounded-3xl bg-[#f8fafc] text-slate-800 border border-slate-200 shadow-2xl overflow-hidden flex flex-col max-h-[94vh]">
             
-            {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-slate-800/90 bg-slate-950/80 flex items-center justify-between gap-4 shrink-0">
+            {/* Clean Light Modal Header */}
+            <div className="px-6 py-4 border-b border-slate-200 bg-white flex items-center justify-between gap-4 shrink-0 shadow-2xs">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-xs">
                   <Terminal className="w-5 h-5 stroke-[2.2]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold font-mono tracking-wider text-cyan-300 uppercase">
+                    <span className="text-xs font-bold font-mono tracking-wider text-slate-900 uppercase">
                       Ziki Local Agent Control
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-500/15 border border-blue-400/30 text-blue-300">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-semibold">
                       Target: {selectedAgentName}
                     </span>
                   </div>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-500">
                     Live Web-to-Terminal Coordination Demonstration
                   </span>
                 </div>
@@ -168,7 +168,7 @@ export function App() {
               <button
                 type="button"
                 onClick={() => setIsAgentControlModalOpen(false)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
                 title="Close and return to My agents"
               >
                 <X className="w-5 h-5" />
@@ -176,7 +176,7 @@ export function App() {
             </div>
 
             {/* Modal Scrollable Body */}
-            <div className="p-4 sm:p-6 overflow-y-auto flex-1">
+            <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-[#f8fafc]">
               <LocalAgentDashboard
                 onBackToOverview={() => setIsAgentControlModalOpen(false)}
                 onLaunchGoalOnboarding={() => {
@@ -206,7 +206,7 @@ export function App() {
             <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-ping" />
             <span className="font-mono font-bold text-slate-900">Ziki Proposed HAI Demo:</span>
             <span className="text-slate-600 hidden md:inline">
-              "My agents" page with interactive Local Agent Control
+              "My agents" page with interactive Local Agent Control (Light Mode)
             </span>
           </div>
 

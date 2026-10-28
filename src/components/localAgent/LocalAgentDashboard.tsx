@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Terminal, 
-  Bot, 
-  MessageSquare, 
-  ShieldCheck, 
-  HelpCircle, 
-  Activity, 
-  Sparkles, 
-  Radio, 
-  ArrowRight,
-  RefreshCw,
-  Compass,
-  FileCode,
-  CheckCircle2
+  Sparkles
 } from 'lucide-react';
 import { 
   LocalAgentSession, 
@@ -108,7 +96,6 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
 
     setMessages((prev) => [...prev, userMsg]);
 
-    // Add to timeline
     setTimelineEvents((prev) => [
       {
         id: `evt-${Date.now()}`,
@@ -122,13 +109,12 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
       ...prev
     ]);
 
-    // Simulate agent formulation and response
     setIsAgentTyping(true);
     setTimeout(() => {
       let replyText = `Understood. I have constrained my execution parameters to: "${text}". The local terminal task is updating accordingly without touching external files.`;
       
       if (text.toLowerCase().includes('mobile') || text.toLowerCase().includes('layout')) {
-        replyText = `Understood. The proposed changes will strictly stay within the responsive layout boundaries. No state stores, checkout APIs, or auth tokens will be touched.`;
+        replyText = `Understood. The proposed changes will strictly stay within the responsive layout boundaries. No cart state stores, checkout APIs, or auth tokens will be touched.`;
       } else if (text.toLowerCase().includes('test')) {
         replyText = `Added automated layout test cases for mobile touch viewports to the verification queue.`;
       }
@@ -162,7 +148,6 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
       ? 'Option B (Media Query Breakpoints)' 
       : `Custom: "${customText}"`;
 
-    // Add notification into chat
     setMessages((prev) => [
       ...prev,
       {
@@ -181,7 +166,6 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
       }
     ]);
 
-    // Add to timeline
     setTimelineEvents((prev) => [
       {
         id: `evt-clar-${Date.now()}`,
@@ -280,21 +264,21 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8 animate-fade-in-up">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6 text-slate-800 animate-fade-in-up font-sans">
       
-      {/* Top Header Banner with Living Agent Intro */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+      {/* Top Header Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm animate-pulse">
+            <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 shadow-xs">
               PROPOSED HAI DESIGN CONCEPT
             </span>
-            <span className="text-xs text-slate-400 font-mono">· Web-to-Terminal Coordination</span>
+            <span className="text-xs text-slate-500 font-mono">· Web-to-Terminal Coordination</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-sans">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
             Ziki Local Agent Control
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
             Guide AI coding agents running in your local terminal from anywhere on the web. Give directives, resolve architectural forks, review staged diffs, and approve changes without terminal context switching.
           </p>
         </div>
@@ -303,9 +287,9 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
           <button
             type="button"
             onClick={onLaunchGoalOnboarding}
-            className="shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 text-cyan-300 text-xs font-semibold transition-all hover:scale-105"
+            className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold shadow-xs transition-all hover:scale-102"
           >
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
             <span>Open Goal-First Planner</span>
           </button>
         )}
@@ -320,9 +304,10 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         />
       </section>
 
-      {/* Living Whimsical Mascot Atmosphere Card */}
-      <div className="p-4 rounded-3xl bg-slate-900/40 border border-blue-500/20 shadow-xl overflow-hidden">
+      {/* Living Whimsical Mascot Atmosphere Card (Light Mode) */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm overflow-hidden">
         <WhimsicalAgentGraphic
+          theme="light"
           statusText={
             action.status === 'approved'
               ? "All staged local changes authorized! Terminal merge completed with zero regressions."
@@ -334,10 +319,10 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
       </div>
 
       {/* Two Column Grid: Conversation (Section B) + Decisions & Approvals (Section C & D) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* Left Column (5 Cols on LG): Section B - Human-to-Agent Live Chat */}
-        <div className="lg:col-span-5 space-y-6">
+        {/* Left Column: Section B - Human-to-Agent Live Chat */}
+        <div className="lg:col-span-5 space-y-5">
           <HumanAgentChat
             messages={messages}
             onSendMessage={handleSendMessage}
@@ -345,8 +330,8 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
           />
         </div>
 
-        {/* Right Column (7 Cols on LG): Section C & D - Clarification Card & Proposed Action Approval */}
-        <div className="lg:col-span-7 space-y-6">
+        {/* Right Column: Section C & D - Clarification Card & Proposed Action Approval */}
+        <div className="lg:col-span-7 space-y-5">
           
           {/* SECTION C: Agent Clarification Card */}
           <section aria-labelledby="section-clarification">
@@ -372,11 +357,10 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
       </div>
 
       {/* SECTION E: Agent Activity Timeline (Full Width) */}
-      <section aria-labelledby="section-timeline" className="pt-2">
+      <section aria-labelledby="section-timeline" className="pt-1">
         <AgentActivityTimeline events={timelineEvents} />
       </section>
 
     </div>
   );
 };
-

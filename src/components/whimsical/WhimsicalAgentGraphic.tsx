@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Shield, Sparkles, Lock, Users, Bot, MessageSquare, CheckCircle, Zap } from 'lucide-react';
+import { Shield, Sparkles, Lock, Users, Bot, Zap } from 'lucide-react';
 
 interface WhimsicalAgentGraphicProps {
   interactive?: boolean;
   statusText?: string;
   isThinking?: boolean;
+  theme?: 'light' | 'dark';
   onExploreGoal?: (goalId: string) => void;
 }
 
@@ -12,29 +13,32 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
   interactive = true,
   statusText,
   isThinking = false,
+  theme = 'light',
   onExploreGoal
 }) => {
   const [speechBubbleIndex, setSpeechBubbleIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const speechMessages = [
-    "Hello wisdom! I'm your Ziki Agent Coordinator. State your goal, and I'll assemble the squad.",
-    "No guesswork required. We generate the project brief; you maintain 100% human approval control.",
-    "All tasks undergo triage, dispatch, contribution, review, and approved merge before execution."
+    "Hello wisdom! I'm your Ziki Agent Coordinator. State your directive, and I'll keep terminal tasks aligned.",
+    "No guesswork required. We stage local changes; you maintain 100% human approval control before merge.",
+    "All terminal tasks undergo triage, dispatch, local contribution, review, and approved merge."
   ];
 
   const handleMascotClick = () => {
     setSpeechBubbleIndex((prev) => (prev + 1) % speechMessages.length);
   };
 
+  const isLight = theme === 'light';
+
   return (
     <div className="relative w-full max-w-4xl mx-auto py-2 px-2 select-none animate-fade-in-up">
       {/* Layered ambient backdrop glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] bg-blue-600/15 rounded-full blur-3xl pointer-events-none transition-all duration-700" />
-      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-60 h-60 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full blur-3xl pointer-events-none transition-all duration-700 ${
+        isLight ? 'bg-blue-400/10' : 'bg-blue-600/15'
+      }`} />
 
-      <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12">
+      <div className="relative flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10">
         
         {/* Left: Living Futuristic Agent Mascot & Energy Shield */}
         <div className="relative flex-1 flex flex-col items-center justify-center">
@@ -43,24 +47,34 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
           <div 
             onClick={handleMascotClick}
             className={`mb-3 max-w-xs sm:max-w-sm px-4 py-2.5 rounded-2xl border backdrop-blur-md cursor-pointer transition-all duration-300 relative ${
-              isThinking 
-                ? 'bg-blue-950/80 border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse' 
-                : 'bg-slate-900/80 border-blue-500/30 hover:border-blue-400/60 shadow-[0_0_15px_rgba(37,99,235,0.2)]'
+              isLight 
+                ? isThinking
+                  ? 'bg-blue-50 border-blue-400 shadow-md animate-pulse'
+                  : 'bg-white border-blue-200 hover:border-blue-300 shadow-sm'
+                : isThinking 
+                  ? 'bg-blue-950/80 border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse' 
+                  : 'bg-slate-900/80 border-blue-500/30 hover:border-blue-400/60 shadow-md'
             }`}
             title="Click to hear from your agent companion"
           >
             {/* Bubble arrow pointing down to agent */}
-            <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-inherit border-r border-b border-inherit rotate-45" />
+            <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-inherit border-r border-b rotate-45 ${
+              isLight ? 'border-blue-200' : 'border-blue-500/30'
+            }`} />
 
             <div className="flex items-start gap-2.5">
-              <div className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shrink-0 mt-0.5">
-                {isThinking ? <Zap className="w-3 h-3 animate-spin text-cyan-300" /> : <Bot className="w-3 h-3 text-cyan-300" />}
+              <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
+                isLight ? 'bg-blue-100 text-blue-600 border border-blue-200' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/40'
+              }`}>
+                {isThinking ? <Zap className="w-3 h-3 animate-spin" /> : <Bot className="w-3 h-3" />}
               </div>
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-bold block mb-0.5">
+                <span className={`text-[10px] font-mono uppercase tracking-wider font-bold block mb-0.5 ${
+                  isLight ? 'text-blue-700' : 'text-cyan-300'
+                }`}>
                   {isThinking ? 'AI SYNTHESIZER ACTIVE' : 'ZIKI SQUAD COMPANION'}
                 </span>
-                <p className="text-xs text-slate-200 leading-snug font-sans">
+                <p className={`text-xs leading-snug font-sans ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
                   {statusText || speechMessages[speechBubbleIndex]}
                 </p>
               </div>
@@ -74,13 +88,17 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
             onMouseLeave={() => setIsHovered(false)}
           >
             
-            {/* Holographic orbital rings with smooth counter-rotation */}
+            {/* Holographic orbital rings */}
             <div 
-              className="absolute inset-0 rounded-full border border-cyan-500/20 animate-spin transition-opacity duration-500" 
+              className={`absolute inset-0 rounded-full border animate-spin transition-opacity duration-500 ${
+                isLight ? 'border-blue-300/40' : 'border-cyan-500/20'
+              }`} 
               style={{ animationDuration: isHovered ? '12s' : '26s' }} 
             />
             <div 
-              className="absolute inset-4 rounded-full border border-dashed border-blue-400/30 animate-spin" 
+              className={`absolute inset-4 rounded-full border border-dashed animate-spin ${
+                isLight ? 'border-indigo-300/50' : 'border-blue-400/30'
+              }`} 
               style={{ animationDuration: isHovered ? '8s' : '18s', animationDirection: 'reverse' }} 
             />
 
@@ -92,7 +110,7 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
                 viewBox="0 0 240 240" 
                 fill="none" 
                 xmlns="http://www.w3.org/2000/svg" 
-                className="drop-shadow-[0_0_25px_rgba(56,189,248,0.4)]"
+                className="drop-shadow-[0_0_20px_rgba(56,189,248,0.35)]"
               >
                 <defs>
                   <linearGradient id="armorGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -109,10 +127,6 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
                     <stop offset="50%" stopColor="#38bdf8" stopOpacity="1" />
                     <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
                   </linearGradient>
-                  <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="4" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
                 </defs>
 
                 {/* Torso & Shoulders */}
@@ -130,7 +144,7 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
                 
                 {/* Sleek Visor with Blinking Animation */}
                 <g className="animate-visor-blink">
-                  <path d="M96 82 C96 74 144 74 144 82 C144 92 96 92 96 82 Z" fill="#38bdf8" filter="url(#neonGlow)" />
+                  <path d="M96 82 C96 74 144 74 144 82 C144 92 96 92 96 82 Z" fill="#38bdf8" />
                   <line x1="99" y1="82" x2="141" y2="82" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
                 </g>
 
@@ -140,7 +154,7 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
 
                 {/* Holographic Glowing Energy Shield */}
                 <g className="animate-shield-pulse">
-                  <polygon points="195,80 230,95 230,150 195,175 160,150 160,95" fill="url(#shieldGrad)" stroke="#38bdf8" strokeWidth="3" filter="url(#neonGlow)" />
+                  <polygon points="195,80 230,95 230,150 195,175 160,150 160,95" fill="url(#shieldGrad)" stroke="#38bdf8" strokeWidth="3" />
                   <polygon points="195,92 218,105 218,142 195,160 172,142 172,105" fill="none" stroke="#67e8f9" strokeWidth="1.5" strokeDasharray="3 3" />
                   <path d="M188 128 L193 133 L203 121" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                 </g>
@@ -151,72 +165,112 @@ export const WhimsicalAgentGraphic: React.FC<WhimsicalAgentGraphicProps> = ({
             </div>
 
             {/* Shield Label Badge */}
-            <div className="absolute top-2 right-2 sm:right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/85 border border-cyan-400/50 text-cyan-300 text-xs font-mono font-semibold tracking-wider glow-cyan transition-transform group-hover:scale-105">
-              <Shield className="w-3.5 h-3.5 text-cyan-400" />
+            <div className={`absolute top-2 right-2 sm:right-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold tracking-wider transition-transform group-hover:scale-105 ${
+              isLight 
+                ? 'bg-blue-50 border border-blue-300 text-blue-700 shadow-xs' 
+                : 'bg-cyan-950/85 border border-cyan-400/50 text-cyan-300 glow-cyan'
+            }`}>
+              <Shield className="w-3.5 h-3.5 text-blue-600" />
               <span>PROTECTION</span>
             </div>
           </div>
         </div>
 
-        {/* Right: Feature Highlights matching whimsical security screenshot */}
-        <div className="flex-1 space-y-4 w-full">
+        {/* Right: Feature Highlights matching whimsical reference */}
+        <div className="flex-1 space-y-3 w-full">
           
           {/* Findings Detected Stream */}
-          <div className="p-3.5 rounded-xl bg-slate-900/70 border border-blue-500/20 backdrop-blur-sm hover:border-blue-500/50 hover:bg-slate-900/90 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-between group cursor-default">
+          <div className={`p-3.5 rounded-xl border transition-all duration-300 flex items-center justify-between group cursor-default ${
+            isLight
+              ? 'bg-white border-slate-200 hover:border-blue-300 shadow-2xs hover:shadow-xs'
+              : 'bg-slate-900/70 border-blue-500/20 hover:border-blue-500/50'
+          }`}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-5 h-5 text-blue-400" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110 ${
+                isLight ? 'bg-blue-50 border border-blue-200 text-blue-600' : 'bg-blue-500/10 border border-blue-500/30 text-blue-400'
+              }`}>
+                <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono tracking-widest text-blue-400 font-bold block">
+                <span className={`text-xs uppercase font-mono tracking-widest font-bold block ${
+                  isLight ? 'text-blue-700' : 'text-blue-400'
+                }`}>
                   FINDINGS DETECTED
                 </span>
-                <p className="text-xs text-slate-300">Continuous telemetry & vulnerability vector analysis</p>
+                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>
+                  Continuous telemetry & vulnerability vector analysis
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span className="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                isLight ? 'bg-blue-50 text-blue-700 border-blue-200 font-semibold' : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20'
+              }`}>
                 Live Stream
               </span>
             </div>
           </div>
 
           {/* Fixes Applied Card */}
-          <div className="p-3.5 rounded-xl bg-slate-900/70 border border-emerald-500/20 backdrop-blur-sm hover:border-emerald-500/50 hover:bg-slate-900/90 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-between group cursor-default">
+          <div className={`p-3.5 rounded-xl border transition-all duration-300 flex items-center justify-between group cursor-default ${
+            isLight
+              ? 'bg-white border-slate-200 hover:border-emerald-300 shadow-2xs hover:shadow-xs'
+              : 'bg-slate-900/70 border-emerald-500/20 hover:border-emerald-500/50'
+          }`}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                <Lock className="w-5 h-5 text-emerald-400" />
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110 ${
+                isLight ? 'bg-emerald-50 border border-emerald-200 text-emerald-600' : 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'
+              }`}>
+                <Lock className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xs uppercase font-mono tracking-widest text-emerald-400 font-bold block">
+                <span className={`text-xs uppercase font-mono tracking-widest font-bold block ${
+                  isLight ? 'text-emerald-700' : 'text-emerald-400'
+                }`}>
                   FIXES APPLIED
                 </span>
-                <p className="text-xs text-slate-300">Defensive patches generated & validated before deploy</p>
+                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>
+                  Defensive patches generated & validated before deploy
+                </p>
               </div>
             </div>
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+              isLight ? 'bg-emerald-50 text-emerald-700 border-emerald-200 font-semibold' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+            }`}>
               Auto-Gated
             </span>
           </div>
 
           {/* Collaborative Reporting Card */}
-          <div className="p-3.5 rounded-xl bg-slate-900/70 border border-purple-500/20 backdrop-blur-sm hover:border-purple-500/50 hover:bg-slate-900/90 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-between group cursor-default">
+          <div className={`p-3.5 rounded-xl border transition-all duration-300 flex items-center justify-between group cursor-default ${
+            isLight
+              ? 'bg-white border-slate-200 hover:border-purple-300 shadow-2xs hover:shadow-xs'
+              : 'bg-slate-900/70 border-purple-500/20 hover:border-purple-500/50'
+          }`}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110 ${
+                isLight ? 'bg-purple-50 border border-purple-200 text-purple-600' : 'bg-purple-500/10 border border-purple-500/30 text-purple-400'
+              }`}>
                 <div className="flex -space-x-1 items-center">
-                  <Users className="w-4 h-4 text-purple-300" />
-                  <Bot className="w-4 h-4 text-cyan-300" />
+                  <Users className="w-4 h-4" />
+                  <Bot className="w-4 h-4" />
                 </div>
               </div>
               <div>
-                <span className="text-xs uppercase font-mono tracking-widest text-purple-400 font-bold block">
+                <span className={`text-xs uppercase font-mono tracking-widest font-bold block ${
+                  isLight ? 'text-purple-700' : 'text-purple-400'
+                }`}>
                   COLLABORATIVE REPORTING
                 </span>
-                <p className="text-xs text-slate-300">People and specialized AI agents in full synchronization</p>
+                <p className={`text-xs ${isLight ? 'text-slate-600' : 'text-slate-300'}`}>
+                  People and specialized AI agents in full synchronization
+                </p>
               </div>
             </div>
-            <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20">
+            <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+              isLight ? 'bg-purple-50 text-purple-700 border-purple-200 font-semibold' : 'bg-purple-500/10 text-purple-300 border border-purple-500/20'
+            }`}>
               Human-in-Loop
             </span>
           </div>

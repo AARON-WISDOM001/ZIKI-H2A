@@ -8,9 +8,7 @@ import {
   ChevronDown, 
   ChevronUp, 
   Terminal, 
-  Sparkles, 
   Lock,
-  Layers,
   Check,
   X
 } from 'lucide-react';
@@ -30,49 +28,47 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
   onResetDecision
 }) => {
   const [isDiffExpanded, setIsDiffExpanded] = useState(true);
-  const [rejectReason, setRejectReason] = useState('');
-  const [showRejectInput, setShowRejectInput] = useState(false);
 
   const isPending = action.status === 'pending';
   const isApproved = action.status === 'approved';
   const isRejected = action.status === 'rejected';
 
   return (
-    <div className={`relative rounded-3xl border transition-all duration-300 p-5 sm:p-7 shadow-2xl animate-fade-in-up ${
+    <div className={`relative rounded-2xl border transition-all duration-300 p-5 sm:p-6 shadow-sm animate-fade-in-up ${
       isApproved 
-        ? 'bg-gradient-to-b from-blue-950/70 via-slate-900 to-emerald-950/40 border-emerald-500/50 shadow-[0_0_35px_rgba(16,185,129,0.2)]'
+        ? 'bg-emerald-50/50 border-emerald-300'
         : isRejected
-        ? 'bg-gradient-to-b from-slate-900 to-rose-950/30 border-rose-500/40'
-        : 'bg-[#0b1329] border-blue-500/40 shadow-[0_0_30px_rgba(37,99,235,0.15)]'
+        ? 'bg-rose-50/50 border-rose-300'
+        : 'bg-white border-slate-200'
     }`}>
       
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-3.5">
         <div className="flex items-start gap-3">
-          <div className={`w-11 h-11 rounded-2xl flex items-center justify-center border shrink-0 ${
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 ${
             isApproved 
-              ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+              ? 'bg-emerald-100 border-emerald-300 text-emerald-700'
               : isRejected
-              ? 'bg-rose-500/20 border-rose-400 text-rose-300'
-              : 'bg-blue-600/20 border-blue-400/50 text-cyan-300'
+              ? 'bg-rose-100 border-rose-300 text-rose-700'
+              : 'bg-blue-50 border-blue-200 text-blue-600'
           }`}>
-            <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
+            <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
           </div>
 
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className={`text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full border font-bold ${
+              <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border font-bold ${
                 isApproved 
-                  ? 'bg-emerald-500/20 border-emerald-400/50 text-emerald-300'
+                  ? 'bg-emerald-100 border-emerald-300 text-emerald-800'
                   : isRejected
-                  ? 'bg-rose-500/20 border-rose-400/50 text-rose-300'
-                  : 'bg-blue-500/20 border-blue-400/50 text-cyan-300 animate-pulse'
+                  ? 'bg-rose-100 border-rose-300 text-rose-800'
+                  : 'bg-blue-50 border-blue-200 text-blue-700'
               }`}>
                 {isApproved ? 'ACTION AUTHORIZED' : isRejected ? 'ACTION REJECTED' : 'HUMAN APPROVAL REQUIRED'}
               </span>
               <span className="text-xs font-mono text-slate-400">· Staged Local Change</span>
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-white tracking-tight mt-1">
+            <h3 className="text-base font-bold text-slate-900 tracking-tight mt-0.5">
               {action.title}
             </h3>
           </div>
@@ -80,12 +76,12 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
 
         {/* Status Pill & Reset */}
         <div className="flex items-center gap-2 self-start sm:self-center">
-          <span className={`text-xs font-mono px-3 py-1 rounded-full border ${
+          <span className={`text-xs font-mono px-3 py-1 rounded-full border font-medium ${
             isApproved
-              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
+              ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
               : isRejected
-              ? 'bg-rose-500/20 text-rose-300 border-rose-400/40'
-              : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+              ? 'bg-rose-100 text-rose-800 border-rose-300'
+              : 'bg-amber-50 text-amber-800 border-amber-200'
           }`}>
             {isApproved ? 'Approved by wisdom Aaron' : isRejected ? 'Rejected by Human' : 'Awaiting Review'}
           </span>
@@ -93,7 +89,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
             <button
               type="button"
               onClick={onResetDecision}
-              className="text-xs text-slate-400 hover:text-white underline font-mono ml-1"
+              className="text-xs text-slate-500 hover:text-slate-800 underline font-mono ml-1"
             >
               Reset
             </button>
@@ -102,43 +98,43 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
       </div>
 
       {/* Purpose & Human-in-the-Loop Scope Notice */}
-      <div className="space-y-3 pt-2">
-        <div className="p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed">
-          <strong className="text-white block font-semibold mb-0.5">Proposed Modification Purpose:</strong>
+      <div className="space-y-2.5 pt-2">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-700 leading-relaxed">
+          <strong className="text-slate-900 block font-semibold mb-0.5">Proposed Modification Purpose:</strong>
           {action.purpose}
         </div>
 
         {/* Clear Visual Distinction Notice */}
-        <div className="p-3 rounded-xl bg-blue-950/40 border border-blue-500/25 flex items-start gap-2.5 text-xs text-blue-200">
-          <AlertTriangle className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+        <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-start gap-2.5 text-xs text-blue-800">
+          <AlertTriangle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <strong className="text-white">Reviewing Proposal vs Real Execution:</strong> {action.scopeNotice}
+            <strong className="font-semibold text-blue-900">Reviewing Proposal vs Real Execution:</strong> {action.scopeNotice}
           </p>
         </div>
       </div>
 
       {/* Affected Files List */}
-      <div className="space-y-2 pt-1">
-        <div className="flex items-center justify-between text-xs text-slate-400 font-mono">
+      <div className="space-y-1.5 pt-1">
+        <div className="flex items-center justify-between text-xs text-slate-500 font-mono">
           <span>Affected Files ({action.affectedFiles.length}):</span>
-          <span className="text-cyan-400">Risk Assessment: {action.riskLevel}</span>
+          <span className="text-blue-700 font-semibold">Risk Level: {action.riskLevel}</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {action.affectedFiles.map((file, idx) => (
             <div
               key={idx}
-              className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 flex items-center justify-between text-xs"
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs"
             >
               <div className="flex items-center gap-2 truncate">
-                <FileCode className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="font-mono text-slate-200 truncate" title={file.path}>
+                <FileCode className="w-4 h-4 text-blue-600 shrink-0" />
+                <span className="font-mono text-slate-800 truncate" title={file.path}>
                   {file.path}
                 </span>
               </div>
               <div className="flex items-center gap-1.5 font-mono text-[11px] shrink-0 ml-2">
-                <span className="text-emerald-400">+{file.additions}</span>
-                <span className="text-rose-400">-{file.deletions}</span>
+                <span className="text-emerald-700 font-bold">+{file.additions}</span>
+                <span className="text-rose-600 font-bold">-{file.deletions}</span>
               </div>
             </div>
           ))}
@@ -146,24 +142,24 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
       </div>
 
       {/* Code Diff Preview Inspector */}
-      <div className="rounded-2xl border border-slate-800 overflow-hidden bg-slate-950">
+      <div className="rounded-xl border border-slate-800 overflow-hidden bg-slate-950 shadow-xs">
         <div 
           onClick={() => setIsDiffExpanded(!isDiffExpanded)}
-          className="px-4 py-2.5 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between cursor-pointer text-xs font-mono text-slate-300 hover:text-white"
+          className="px-4 py-2 bg-slate-900 border-b border-slate-800 flex items-center justify-between cursor-pointer text-xs font-mono text-slate-300 hover:text-white"
         >
           <div className="flex items-center gap-2">
             <Terminal className="w-3.5 h-3.5 text-cyan-400" />
             <span>Staged Git Diff Preview</span>
           </div>
-          <div className="flex items-center gap-1 text-[11px] text-slate-500">
+          <div className="flex items-center gap-1 text-[11px] text-slate-400">
             <span>{isDiffExpanded ? 'Collapse' : 'Expand'}</span>
             {isDiffExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
           </div>
         </div>
 
         {isDiffExpanded && (
-          <div className="p-4 max-h-56 overflow-y-auto">
-            <pre className="text-xs font-mono leading-relaxed text-slate-300 whitespace-pre">
+          <div className="p-3.5 max-h-56 overflow-y-auto">
+            <pre className="text-xs font-mono leading-relaxed text-slate-200 whitespace-pre">
               {action.diffSnippet}
             </pre>
           </div>
@@ -172,20 +168,17 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
 
       {/* Decision Controls Bar (Approve / Reject) */}
       {isPending ? (
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-800/80">
-          <div className="text-xs text-slate-400 flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100">
+          <div className="text-xs text-slate-500 flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-blue-600" />
             <span>Terminal will NOT apply git patch until you authorize here.</span>
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
             <button
               type="button"
-              onClick={() => {
-                setShowRejectInput(true);
-                onReject("Requires refinement for mobile accessibility.");
-              }}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 text-xs font-semibold transition-all hover:scale-102"
+              onClick={() => onReject("Requires refinement for mobile accessibility.")}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition-colors"
             >
               <X className="w-3.5 h-3.5" />
               <span>Reject Proposal</span>
@@ -194,7 +187,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
             <button
               type="button"
               onClick={onApprove}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-bold text-xs shadow-[0_0_20px_rgba(16,185,129,0.4)] transition-all hover:scale-105 active:scale-95"
+              className="flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm shadow-emerald-500/20 transition-all hover:scale-102 active:scale-98"
             >
               <Check className="w-4 h-4 stroke-[3]" />
               <span>Approve & Instruct Terminal to Apply</span>
@@ -202,30 +195,30 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
           </div>
         </div>
       ) : isApproved ? (
-        <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-400/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-emerald-200">
+        <div className="p-3.5 rounded-xl bg-emerald-100/70 border border-emerald-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-emerald-900">
           <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
             <div>
-              <span className="font-bold text-white block">Action Staged and Applied Locally</span>
-              <p className="text-emerald-300 font-mono text-[11px]">
+              <span className="font-bold text-slate-900 block">Action Staged and Applied Locally</span>
+              <p className="text-emerald-800 font-mono text-[11px]">
                 Cryptographic approval token logged: #ZIKI-AUTH-{(Math.random() * 8000 + 1000).toFixed(0)}
               </p>
             </div>
           </div>
-          <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold shrink-0">
+          <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-emerald-600 text-white font-bold shrink-0 shadow-2xs">
             MERGE COMPLETE
           </span>
         </div>
       ) : (
-        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-400/50 flex items-center justify-between text-xs text-rose-200">
+        <div className="p-3.5 rounded-xl bg-rose-100/70 border border-rose-300 flex items-center justify-between text-xs text-rose-900">
           <div className="flex items-center gap-2.5">
-            <XCircle className="w-5 h-5 text-rose-400 shrink-0" />
+            <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
             <div>
-              <span className="font-bold text-white block">Proposal Rejected by Developer</span>
-              <p className="text-rose-300">Terminal agent notified to rollback and await updated directives.</p>
+              <span className="font-bold text-slate-900 block">Proposal Rejected by Developer</span>
+              <p className="text-rose-800">Terminal agent notified to rollback and await updated directives.</p>
             </div>
           </div>
-          <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-rose-500/20 border border-rose-400/40 text-rose-300 font-bold">
+          <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-rose-600 text-white font-bold shadow-2xs">
             ROLLED BACK
           </span>
         </div>
@@ -234,4 +227,3 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
     </div>
   );
 };
-

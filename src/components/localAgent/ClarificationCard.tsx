@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { 
-  HelpCircle, 
-  GitFork, 
   CheckCircle2, 
-  Sparkles, 
-  ArrowRight, 
-  Edit3, 
   Check, 
-  AlertCircle,
-  Lightbulb,
+  Edit3, 
   Compass
 } from 'lucide-react';
 import { ClarificationProposal } from '../../types/localAgent';
@@ -36,24 +30,22 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
   };
 
   return (
-    <div className="relative rounded-3xl bg-[#0b1329] border border-cyan-500/30 p-5 sm:p-6 shadow-xl space-y-5 animate-fade-in-up">
-      {/* Ambient Top Glow */}
-      <div className="absolute top-0 right-10 w-48 h-20 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
-
+    <div className="relative rounded-2xl bg-white border border-blue-200/90 p-5 sm:p-6 shadow-sm space-y-4 animate-fade-in-up">
+      
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-cyan-500/15 border border-cyan-400/40 flex items-center justify-center text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-xs">
             <Compass className="w-5 h-5 stroke-[2.2]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-bold">
+              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-bold">
                 HUMAN GUIDANCE REQUIRED
               </span>
-              <span className="text-xs text-slate-400 font-mono">· Architectural Fork</span>
+              <span className="text-xs text-slate-500 font-mono">· Architectural Fork</span>
             </div>
-            <h3 className="text-sm sm:text-base font-bold text-white tracking-tight mt-0.5">
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-0.5">
               Agent Clarification Request
             </h3>
           </div>
@@ -61,33 +53,33 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
 
         {isResolved ? (
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-semibold">
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Resolved by Human</span>
             </span>
             <button
               type="button"
               onClick={onResetClarification}
-              className="text-xs text-slate-400 hover:text-white underline font-mono ml-1"
+              className="text-xs text-slate-500 hover:text-slate-800 underline font-mono ml-1"
             >
               Reset
             </button>
           </div>
         ) : (
-          <span className="text-xs font-mono text-amber-300 bg-amber-500/15 border border-amber-500/30 px-3 py-1 rounded-full flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+          <span className="text-xs font-mono text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full flex items-center gap-1.5 font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
             <span>Agent Paused Pending Decision</span>
           </span>
         )}
       </div>
 
       {/* Agent Question & Context Banner */}
-      <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-1.5">
-        <p className="text-sm font-semibold text-white leading-relaxed">
+      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+        <p className="text-sm font-semibold text-slate-900 leading-relaxed">
           "{proposal.question}"
         </p>
-        <p className="text-xs text-slate-400 leading-relaxed">
-          <strong className="text-slate-300">Context:</strong> {proposal.context}
+        <p className="text-xs text-slate-500 leading-relaxed">
+          <strong className="text-slate-700">Context:</strong> {proposal.context}
         </p>
       </div>
 
@@ -99,33 +91,33 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
           role="button"
           tabIndex={0}
           onClick={() => !isResolved && onSelectOption('option-a')}
-          className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
+          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
             proposal.chosenOption === 'option-a'
-              ? 'bg-blue-950/70 border-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.3)] ring-2 ring-cyan-400/50'
-              : 'bg-slate-900/50 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/80'
+              ? 'bg-blue-50/80 border-blue-500 shadow-sm ring-2 ring-blue-400/40'
+              : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60 shadow-2xs'
           }`}
         >
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-semibold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200 font-semibold">
                 {proposal.optionA.badge}
               </span>
               {proposal.chosenOption === 'option-a' && (
-                <div className="w-5 h-5 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center">
+                <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
               )}
             </div>
-            <h4 className="text-xs sm:text-sm font-bold text-white">
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900">
               {proposal.optionA.title}
             </h4>
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed">
               {proposal.optionA.description}
             </p>
           </div>
 
-          <div className="mt-4 pt-2.5 border-t border-slate-800/80 text-[11px] text-slate-400">
-            <span className="text-slate-500 font-mono">Trade-off:</span> {proposal.optionA.tradeoff}
+          <div className="mt-3.5 pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+            <span className="text-slate-400 font-mono">Trade-off:</span> {proposal.optionA.tradeoff}
           </div>
         </div>
 
@@ -134,60 +126,60 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
           role="button"
           tabIndex={0}
           onClick={() => !isResolved && onSelectOption('option-b')}
-          className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
+          className={`p-4 rounded-xl border text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
             proposal.chosenOption === 'option-b'
-              ? 'bg-blue-950/70 border-cyan-400 shadow-[0_0_25px_rgba(6,182,212,0.3)] ring-2 ring-cyan-400/50'
-              : 'bg-slate-900/50 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/80'
+              ? 'bg-blue-50/80 border-blue-500 shadow-sm ring-2 ring-blue-400/40'
+              : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60 shadow-2xs'
           }`}
         >
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 font-semibold">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200 font-semibold">
                 {proposal.optionB.badge}
               </span>
               {proposal.chosenOption === 'option-b' && (
-                <div className="w-5 h-5 rounded-full bg-cyan-400 text-slate-950 flex items-center justify-center">
+                <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
               )}
             </div>
-            <h4 className="text-xs sm:text-sm font-bold text-white">
+            <h4 className="text-xs sm:text-sm font-bold text-slate-900">
               {proposal.optionB.title}
             </h4>
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed">
               {proposal.optionB.description}
             </p>
           </div>
 
-          <div className="mt-4 pt-2.5 border-t border-slate-800/80 text-[11px] text-slate-400">
-            <span className="text-slate-500 font-mono">Trade-off:</span> {proposal.optionB.tradeoff}
+          <div className="mt-3.5 pt-2 border-t border-slate-100 text-[11px] text-slate-500">
+            <span className="text-slate-400 font-mono">Trade-off:</span> {proposal.optionB.tradeoff}
           </div>
         </div>
 
       </div>
 
       {/* Option C: Custom Instruction Drawer */}
-      <div className="pt-2 border-t border-slate-800/80">
+      <div className="pt-2 border-t border-slate-100">
         {!isCustomMode && proposal.chosenOption !== 'custom' ? (
           <button
             type="button"
             onClick={() => setIsCustomMode(true)}
-            className="flex items-center gap-2 text-xs font-medium text-slate-400 hover:text-cyan-300 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
           >
-            <Edit3 className="w-3.5 h-3.5 text-cyan-400" />
+            <Edit3 className="w-3.5 h-3.5 text-blue-600" />
             <span>Neither approach? Provide a custom instruction instead →</span>
           </button>
         ) : proposal.chosenOption === 'custom' ? (
-          <div className="p-3.5 rounded-xl bg-blue-950/60 border border-cyan-400/50 text-xs text-slate-200 flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-slate-800 flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-mono text-cyan-300 font-bold block uppercase">Custom Human Instruction Applied</span>
-              <p className="text-slate-100 font-medium">"{proposal.customInstruction}"</p>
+              <span className="text-[10px] font-mono text-blue-700 font-bold block uppercase">Custom Human Instruction Applied</span>
+              <p className="text-slate-900 font-medium">"{proposal.customInstruction}"</p>
             </div>
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           </div>
         ) : (
-          <form onSubmit={handleCustomSubmit} className="space-y-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
-            <label className="block text-xs font-semibold text-slate-300">
+          <form onSubmit={handleCustomSubmit} className="space-y-2.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+            <label className="block text-xs font-semibold text-slate-800">
               Provide specific custom guidance to the agent:
             </label>
             <input
@@ -195,20 +187,20 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
               placeholder="e.g., Use an accessible slide-over sheet with Tailwind classes only, no external drawer library..."
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+              className="w-full px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-2xs"
             />
             <div className="flex items-center justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setIsCustomMode(false)}
-                className="px-3 py-1 rounded-lg text-xs text-slate-400 hover:text-white"
+                className="px-3 py-1 rounded-lg text-xs text-slate-500 hover:text-slate-800 font-medium"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={!customText.trim()}
-                className="px-3.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-slate-950 font-bold text-xs"
+                className="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold text-xs shadow-xs"
               >
                 Submit Custom Instruction
               </button>
@@ -220,4 +212,3 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
     </div>
   );
 };
-
