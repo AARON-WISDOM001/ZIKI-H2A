@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Navbar, ActiveTab } from './components/layout/Navbar';
+import { LocalAgentDashboard } from './components/localAgent/LocalAgentDashboard';
 import { ZikiDashboard } from './components/dashboard/ZikiDashboard';
 import { SecurityLandingView } from './components/security/SecurityLandingView';
 import { GoalFirstModal } from './components/onboarding/GoalFirstModal';
 import { GoalId } from './types/onboarding';
-import { Sparkles, Shield, Megaphone, Wrench, Layers, ExternalLink, Bot, CheckCircle } from 'lucide-react';
+import { Sparkles, Terminal, Shield, Megaphone, Layers, Bot } from 'lucide-react';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('product'); // default to product dashboard as requested
+  const [activeTab, setActiveTab] = useState<ActiveTab>('local-agent'); // Default to Local Agent Control
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [initialGoal, setInitialGoal] = useState<GoalId>('security');
   const [userPoints, setUserPoints] = useState<number>(7871.42);
-  const [completedInitiativesCount, setCompletedInitiativesCount] = useState<number>(0);
+  const [completedInitiativesCount, setCompletedInitiativesCount] = useState<number>(1);
   const [pointsNotification, setPointsNotification] = useState<string | null>(null);
 
   const handleLaunchWithGoal = (goal: GoalId) => {
@@ -54,9 +55,16 @@ export function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 pb-24 transition-opacity duration-300">
+        {activeTab === 'local-agent' && (
+          <LocalAgentDashboard
+            onBackToOverview={() => setActiveTab('product')}
+            onLaunchGoalOnboarding={() => handleLaunchWithGoal('security')}
+          />
+        )}
+
         {activeTab === 'product' && (
           <ZikiDashboard
-            onLaunchOnboarding={(goalId) => handleLaunchWithGoal((goalId as GoalId) || 'security')}
+            onLaunchOnboarding={(goalId) => handleLaunchWithGoal((goalId as GoalId) || 'improve')}
             activeInitiativesCount={completedInitiativesCount}
           />
         )}
@@ -99,60 +107,66 @@ export function App() {
         onInitiativeCompleted={handleInitiativeCompleted}
       />
 
-      {/* Persistent Bottom Demo Bar for Reviewers */}
+      {/* Persistent Bottom Demo Bar for Internship Reviewers */}
       <aside aria-label="Reviewer quick controls" className="fixed bottom-0 inset-x-0 z-30 bg-[#0b1329]/95 border-t border-slate-800/90 backdrop-blur-md px-4 py-2.5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-            <span className="font-mono font-bold text-white">Goal-First Onboarding Demo:</span>
+            <span className="font-mono font-bold text-white">HAI Prototype Demo:</span>
             <span className="text-slate-300 hidden md:inline">
-              Living Agent Mascot & Human-in-the-Loop Workflow
+              Ziki Local Agent Control (Terminal to Web)
             </span>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap justify-center">
-            <span className="text-slate-400 text-[11px] hidden lg:inline">Test Goal Flows:</span>
+            <span className="text-slate-400 text-[11px] hidden lg:inline">Prototype Views:</span>
+            <button
+              type="button"
+              onClick={() => setActiveTab('local-agent')}
+              className={`px-3 py-1 rounded-lg text-[11px] font-mono transition-all ${
+                activeTab === 'local-agent'
+                  ? 'bg-blue-600 text-white font-bold shadow-md'
+                  : 'bg-slate-900 border border-slate-700 text-slate-300 hover:text-white'
+              }`}
+            >
+              ⚡ Local Agent Control
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('product')}
+              className={`px-3 py-1 rounded-lg text-[11px] font-mono transition-all ${
+                activeTab === 'product'
+                  ? 'bg-blue-600 text-white font-bold shadow-md'
+                  : 'bg-slate-900 border border-slate-700 text-slate-300 hover:text-white'
+              }`}
+            >
+              📊 Product Dashboard
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('security')}
+              className={`px-3 py-1 rounded-lg text-[11px] font-mono transition-all ${
+                activeTab === 'security'
+                  ? 'bg-blue-600 text-white font-bold shadow-md'
+                  : 'bg-slate-900 border border-slate-700 text-slate-300 hover:text-white'
+              }`}
+            >
+              🛡️ Security Hub
+            </button>
             <button
               type="button"
               onClick={() => handleLaunchWithGoal('security')}
-              className="px-2.5 py-1 rounded-lg bg-blue-500/15 hover:bg-blue-500/30 border border-blue-400/40 text-cyan-300 text-[11px] font-mono transition-all hover:scale-105"
+              className="px-3 py-1 rounded-lg bg-cyan-950/80 border border-cyan-400/50 text-cyan-300 text-[11px] font-mono hover:bg-cyan-900/60 transition-colors"
             >
-              🛡️ Security
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLaunchWithGoal('marketing')}
-              className="px-2.5 py-1 rounded-lg bg-purple-500/15 hover:bg-purple-500/30 border border-purple-400/40 text-purple-300 text-[11px] font-mono transition-all hover:scale-105"
-            >
-              📣 Marketing
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLaunchWithGoal('build')}
-              className="px-2.5 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-300 text-[11px] font-mono transition-all hover:scale-105"
-            >
-              ✨ Build Product
-            </button>
-            <button
-              type="button"
-              onClick={() => handleLaunchWithGoal('improve')}
-              className="px-2.5 py-1 rounded-lg bg-amber-500/15 hover:bg-amber-500/30 border border-amber-400/40 text-amber-300 text-[11px] font-mono transition-all hover:scale-105"
-            >
-              🔧 Improve Existing
+              ✨ Goal-First Wizard
             </button>
           </div>
 
           <div className="flex items-center gap-3 text-[11px] text-slate-400">
             <span>Points: <strong className="text-amber-400 font-mono">{userPoints.toFixed(2)}</strong></span>
             <span>·</span>
-            <button
-              type="button"
-              onClick={() => setActiveTab(activeTab === 'product' ? 'security' : 'product')}
-              className="text-cyan-400 hover:text-cyan-300 underline font-mono transition-colors"
-            >
-              View {activeTab === 'product' ? 'Security Hub Reference' : 'Main Product View'}
-            </button>
+            <span className="font-mono text-cyan-400">Daemon :4242 Online</span>
           </div>
 
         </div>
