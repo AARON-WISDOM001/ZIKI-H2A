@@ -201,3 +201,4 @@ export const HumanAgentChat: React.FC<HumanAgentChatProps> = ({
     </div>
   );
 };
+

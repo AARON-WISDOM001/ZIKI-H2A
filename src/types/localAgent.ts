@@ -70,3 +70,4 @@ export interface TimelineEvent {
   badge: string;
   status: 'completed' | 'in_progress' | 'pending';
 }
+

@@ -160,3 +160,4 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
     </div>
   );
 };
+
