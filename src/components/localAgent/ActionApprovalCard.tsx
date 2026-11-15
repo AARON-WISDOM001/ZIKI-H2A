@@ -4,7 +4,6 @@ import {
   ShieldCheck, 
   CheckCircle2, 
   XCircle, 
-  AlertTriangle, 
   ChevronDown, 
   ChevronUp, 
   Terminal, 
@@ -64,9 +63,8 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
                   ? 'bg-rose-100 border-rose-300 text-rose-800'
                   : 'bg-blue-50 border-blue-200 text-blue-700'
               }`}>
-                {isApproved ? 'ACTION AUTHORIZED' : isRejected ? 'ACTION REJECTED' : 'HUMAN APPROVAL REQUIRED'}
+                {isApproved ? 'ACTION AUTHORIZED' : isRejected ? 'ACTION REJECTED' : 'APPROVAL REQUIRED'}
               </span>
-              <span className="text-xs font-mono text-slate-400">· Staged Local Change</span>
             </div>
             <h3 className="text-base font-bold text-slate-900 tracking-tight mt-0.5">
               {action.title}
@@ -83,7 +81,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
               ? 'bg-rose-100 text-rose-800 border-rose-300'
               : 'bg-amber-50 text-amber-800 border-amber-200'
           }`}>
-            {isApproved ? 'Approved by wisdom Aaron' : isRejected ? 'Rejected by Human' : 'Awaiting Review'}
+            {isApproved ? 'Approved' : isRejected ? 'Rejected' : 'Awaiting Review'}
           </span>
           {!isPending && (
             <button
@@ -97,27 +95,20 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
         </div>
       </div>
 
-      {/* Purpose & Human-in-the-Loop Scope Notice */}
+      {/* Purpose */}
       <div className="space-y-2.5 pt-2">
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-700 leading-relaxed">
-          <strong className="text-slate-900 block font-semibold mb-0.5">Proposed Modification Purpose:</strong>
+          <strong className="text-slate-900 block font-semibold mb-0.5">Purpose:</strong>
           {action.purpose}
-        </div>
-
-        {/* Clear Visual Distinction Notice */}
-        <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 flex items-start gap-2.5 text-xs text-blue-800">
-          <AlertTriangle className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-          <p className="leading-relaxed">
-            <strong className="font-semibold text-blue-900">Reviewing Proposal vs Real Execution:</strong> {action.scopeNotice}
-          </p>
+          <span className="block text-blue-700 text-xs mt-1.5">{action.scopeNotice}</span>
         </div>
       </div>
 
       {/* Affected Files List */}
       <div className="space-y-1.5 pt-1">
         <div className="flex items-center justify-between text-xs text-slate-500 font-mono">
-          <span>Affected Files ({action.affectedFiles.length}):</span>
-          <span className="text-blue-700 font-semibold">Risk Level: {action.riskLevel}</span>
+          <span>Files ({action.affectedFiles.length})</span>
+          <span className="text-blue-700 font-semibold">Risk: {action.riskLevel}</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -171,7 +162,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100">
           <div className="text-xs text-slate-500 flex items-center gap-2">
             <Lock className="w-3.5 h-3.5 text-blue-600" />
-            <span>Terminal will NOT apply git patch until you authorize here.</span>
+            <span>Nothing applies until you approve.</span>
           </div>
 
           <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
@@ -181,7 +172,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
               className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition-colors"
             >
               <X className="w-3.5 h-3.5" />
-              <span>Reject Proposal</span>
+              <span>Reject</span>
             </button>
 
             <button
@@ -190,7 +181,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
               className="flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm shadow-emerald-500/20 transition-all hover:scale-102 active:scale-98"
             >
               <Check className="w-4 h-4 stroke-[3]" />
-              <span>Approve & Instruct Terminal to Apply</span>
+              <span>Approve</span>
             </button>
           </div>
         </div>
@@ -198,12 +189,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
         <div className="p-3.5 rounded-xl bg-emerald-100/70 border border-emerald-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-emerald-900">
           <div className="flex items-center gap-2.5">
             <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
-            <div>
-              <span className="font-bold text-slate-900 block">Action Staged and Applied Locally</span>
-              <p className="text-emerald-800 font-mono text-[11px]">
-                Cryptographic approval token logged: #ZIKI-AUTH-{(Math.random() * 8000 + 1000).toFixed(0)}
-              </p>
-            </div>
+            <span className="font-bold text-slate-900 block">Applied locally</span>
           </div>
           <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-emerald-600 text-white font-bold shrink-0 shadow-2xs">
             MERGE COMPLETE
@@ -213,10 +199,7 @@ export const ActionApprovalCard: React.FC<ActionApprovalCardProps> = ({
         <div className="p-3.5 rounded-xl bg-rose-100/70 border border-rose-300 flex items-center justify-between text-xs text-rose-900">
           <div className="flex items-center gap-2.5">
             <XCircle className="w-5 h-5 text-rose-600 shrink-0" />
-            <div>
-              <span className="font-bold text-slate-900 block">Proposal Rejected by Developer</span>
-              <p className="text-rose-800">Terminal agent notified to rollback and await updated directives.</p>
-            </div>
+            <span className="font-bold text-slate-900 block">Rejected — rolling back</span>
           </div>
           <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-rose-600 text-white font-bold shadow-2xs">
             ROLLED BACK

@@ -41,9 +41,8 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-bold">
-                HUMAN GUIDANCE REQUIRED
+                Decision Needed
               </span>
-              <span className="text-xs text-slate-500 font-mono">· Architectural Fork</span>
             </div>
             <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight mt-0.5">
               Agent Clarification Request
@@ -68,7 +67,7 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
         ) : (
           <span className="text-xs font-mono text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full flex items-center gap-1.5 font-medium">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
-            <span>Agent Paused Pending Decision</span>
+            <span>Waiting for your choice</span>
           </span>
         )}
       </div>
@@ -167,7 +166,7 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
             className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
           >
             <Edit3 className="w-3.5 h-3.5 text-blue-600" />
-            <span>Neither approach? Provide a custom instruction instead →</span>
+            <span>Custom instruction →</span>
           </button>
         ) : proposal.chosenOption === 'custom' ? (
           <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-slate-800 flex items-center justify-between">
@@ -180,11 +179,11 @@ export const ClarificationCard: React.FC<ClarificationCardProps> = ({
         ) : (
           <form onSubmit={handleCustomSubmit} className="space-y-2.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
             <label className="block text-xs font-semibold text-slate-800">
-              Provide specific custom guidance to the agent:
+              Custom guidance:
             </label>
             <input
               type="text"
-              placeholder="e.g., Use an accessible slide-over sheet with Tailwind classes only, no external drawer library..."
+              placeholder="e.g., Tailwind slide-over only, no drawer library"
               value={customText}
               onChange={(e) => setCustomText(e.target.value)}
               className="w-full px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-2xs"

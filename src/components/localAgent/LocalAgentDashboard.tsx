@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { 
-  Sparkles
-} from 'lucide-react';
-import { 
   LocalAgentSession, 
   ChatMessage, 
   ClarificationProposal, 
@@ -21,17 +18,8 @@ import { HumanAgentChat } from './HumanAgentChat';
 import { ClarificationCard } from './ClarificationCard';
 import { ActionApprovalCard } from './ActionApprovalCard';
 import { AgentActivityTimeline } from './AgentActivityTimeline';
-import { WhimsicalAgentGraphic } from '../whimsical/WhimsicalAgentGraphic';
 
-interface LocalAgentDashboardProps {
-  onBackToOverview?: () => void;
-  onLaunchGoalOnboarding?: () => void;
-}
-
-export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
-  onBackToOverview,
-  onLaunchGoalOnboarding
-}) => {
+export const LocalAgentDashboard: React.FC = () => {
   const [session, setSession] = useState<LocalAgentSession>(INITIAL_LOCAL_AGENT_SESSION);
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_CONVERSATION);
   const [clarification, setClarification] = useState<ClarificationProposal>(INITIAL_CLARIFICATION_PROPOSAL);
@@ -52,7 +40,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
           id: `evt-pause-${Date.now()}`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           title: 'Terminal Socket Paused by Human',
-          description: 'Developer paused background agent stream via Ziki web control.',
+          description: 'Agent stream paused.',
           category: 'connection',
           badge: 'Paused',
           status: 'completed'
@@ -72,7 +60,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
             id: `evt-resume-${Date.now()}`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             title: 'Terminal Socket Resumed',
-            description: 'Daemon re-established TLS handshake on localhost:4242 with 14ms latency.',
+            description: 'Reconnected on localhost:4242.',
             category: 'connection',
             badge: 'Reconnected',
             status: 'completed'
@@ -101,7 +89,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `evt-${Date.now()}`,
         timestamp: time,
         title: 'Human Directive Delivered',
-        description: `Developer sent instruction to terminal agent: "${text.slice(0, 50)}${text.length > 50 ? '...' : ''}"`,
+        description: `"${text.slice(0, 40)}${text.length > 40 ? '…' : ''}"`,
         category: 'human_input',
         badge: 'Directive Received',
         status: 'completed'
@@ -111,12 +99,12 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
 
     setIsAgentTyping(true);
     setTimeout(() => {
-      let replyText = `Understood. I have constrained my execution parameters to: "${text}". The local terminal task is updating accordingly without touching external files.`;
+      let replyText = `Locked: "${text.slice(0, 60)}${text.length > 60 ? '…' : ''}"`;
       
       if (text.toLowerCase().includes('mobile') || text.toLowerCase().includes('layout')) {
-        replyText = `Understood. The proposed changes will strictly stay within the responsive layout boundaries. No cart state stores, checkout APIs, or auth tokens will be touched.`;
+        replyText = `Understood. Changes stay within layout boundaries.`;
       } else if (text.toLowerCase().includes('test')) {
-        replyText = `Added automated layout test cases for mobile touch viewports to the verification queue.`;
+        replyText = `Added layout test cases to the queue.`;
       }
 
       const agentMsg: ChatMessage = {
@@ -143,9 +131,9 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
     }));
 
     const choiceLabel = optionId === 'option-a' 
-      ? 'Option A (CSS Container Queries)' 
+      ? 'Option A' 
       : optionId === 'option-b' 
-      ? 'Option B (Media Query Breakpoints)' 
+      ? 'Option B' 
       : `Custom: "${customText}"`;
 
     setMessages((prev) => [
@@ -154,14 +142,14 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `msg-clar-${Date.now()}`,
         sender: 'human',
         timestamp: time,
-        text: `Architecture decision resolved: Proceeding with ${choiceLabel}.`,
+        text: `Proceeding with ${choiceLabel}.`,
         badge: 'Human Decision'
       },
       {
         id: `msg-agent-clar-${Date.now()}`,
         sender: 'agent',
         timestamp: time,
-        text: `Confirmed. Applying ${choiceLabel} strategy into the local staged branch.`,
+        text: `Confirmed. Applying ${choiceLabel}.`,
         badge: 'Strategy Configured'
       }
     ]);
@@ -171,7 +159,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `evt-clar-${Date.now()}`,
         timestamp: time,
         title: 'Clarification Decision Recorded',
-        description: `Human selected ${choiceLabel}. Staged code generation aligned with human guidance.`,
+        description: `Human selected ${choiceLabel}.`,
         category: 'clarification',
         badge: 'Choice Logged',
         status: 'completed'
@@ -202,7 +190,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `evt-appr-${Date.now()}`,
         timestamp: time,
         title: 'Action Approved & Applied in Local Terminal',
-        description: `Developer approved staged diff. Local daemon executed merge to feat/mobile-cart-redesign.`,
+        description: `Merged to feat/mobile-cart-redesign.`,
         category: 'approval',
         badge: 'Merge Approved',
         status: 'completed'
@@ -216,7 +204,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `msg-appr-${Date.now()}`,
         sender: 'agent',
         timestamp: time,
-        text: `Human approval received! Local git patch applied cleanly (48 additions, 8 deletions). Repository is clean and passing tests.`,
+        text: `Approved. Patch applied cleanly (48+, 8−).`,
         badge: 'Applied Locally'
       }
     ]);
@@ -236,7 +224,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `evt-rej-${Date.now()}`,
         timestamp: time,
         title: 'Action Rejected by Developer',
-        description: `Human rejected staged changes: "${reason || 'Modification disapproved'}". Terminal rolling back.`,
+        description: 'Rolling back.',
         category: 'approval',
         badge: 'Rejected',
         status: 'completed'
@@ -250,7 +238,7 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         id: `msg-rej-${Date.now()}`,
         sender: 'agent',
         timestamp: time,
-        text: `Proposal rejected by developer. Staged changes have been rolled back in ~/projects/acme-shop. Awaiting updated directives.`,
+        text: `Rejected. Staged changes rolled back.`,
         badge: 'Rolled Back'
       }
     ]);
@@ -271,28 +259,13 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="text-[10px] font-mono font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 shadow-xs">
-              PROPOSED HAI DESIGN CONCEPT
+              HAI Concept Demo
             </span>
-            <span className="text-xs text-slate-500 font-mono">· Web-to-Terminal Coordination</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-sans">
             Ziki Local Agent Control
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            Guide AI coding agents running in your local terminal from anywhere on the web. Give directives, resolve architectural forks, review staged diffs, and approve changes without terminal context switching.
-          </p>
         </div>
-
-        {onLaunchGoalOnboarding && (
-          <button
-            type="button"
-            onClick={onLaunchGoalOnboarding}
-            className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold shadow-xs transition-all hover:scale-102"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            <span>Open Goal-First Planner</span>
-          </button>
-        )}
       </div>
 
       {/* SECTION A: Agent Connection Banner */}
@@ -303,20 +276,6 @@ export const LocalAgentDashboard: React.FC<LocalAgentDashboardProps> = ({
           isSimulatingReconnect={isSimulatingReconnect}
         />
       </section>
-
-      {/* Living Whimsical Mascot Atmosphere Card (Light Mode) */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm overflow-hidden">
-        <WhimsicalAgentGraphic
-          theme="light"
-          statusText={
-            action.status === 'approved'
-              ? "All staged local changes authorized! Terminal merge completed with zero regressions."
-              : clarification.status === 'resolved'
-              ? "Architectural strategy locked by developer. Terminal agent synthesizing changes within layout boundaries."
-              : "Standing by on local port 4242. Review the clarification and staged diff below to guide execution."
-          }
-        />
-      </div>
 
       {/* Two Column Grid: Conversation (Section B) + Decisions & Approvals (Section C & D) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">

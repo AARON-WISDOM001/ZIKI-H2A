@@ -48,12 +48,12 @@ describe('Local Agent Control - Section B: Human-to-Agent Chat', () => {
     );
 
     expect(screen.getAllByText(/Only change the mobile layout/i).length).toBeGreaterThanOrEqual(1);
-    expect(screen.getByText(/Understood. The proposed changes will strictly stay/i)).toBeInTheDocument();
+    expect(screen.getByText(/Changes stay within layout boundaries/i)).toBeInTheDocument();
 
-    const input = screen.getByPlaceholderText(/Type directive to local agent/i);
+    const input = screen.getByPlaceholderText(/Direct your agent/i);
     fireEvent.change(input, { target: { value: 'Ensure no checkout logic is modified' } });
 
-    const submitBtn = screen.getByTitle('Send directive to terminal agent');
+    const submitBtn = screen.getByTitle('Send');
     fireEvent.click(submitBtn);
 
     expect(onSend).toHaveBeenCalledWith('Ensure no checkout logic is modified');
@@ -99,9 +99,9 @@ describe('Local Agent Control - Section D: Action Approval Card', () => {
 
     expect(screen.getByText(/Draft Mobile Cart Drawer Bottom Sheet/i)).toBeInTheDocument();
     expect(screen.getByText('src/components/cart/MobileCartDrawer.tsx')).toBeInTheDocument();
-    expect(screen.getByText('Approve & Instruct Terminal to Apply')).toBeInTheDocument();
+    expect(screen.getByText('Approve')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByText('Approve & Instruct Terminal to Apply'));
+    fireEvent.click(screen.getByText('Approve'));
     expect(onApprove).toHaveBeenCalledTimes(1);
   });
 });

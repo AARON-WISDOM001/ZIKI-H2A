@@ -8,141 +8,9 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: #070c18;
-    color: #e2e8f0;
+    background-color: #f8fafc;
+    color: #1e293b;
   }
-}
-
-/* Custom dark theme glow and cyberpunk accent classes */
-.ziki-panel {
-  background: radial-gradient(circle at top left, rgba(30, 41, 59, 0.45), rgba(15, 23, 42, 0.75)), #0b1329;
-  border: 1px solid rgba(56, 189, 248, 0.12);
-  box-shadow: 0 10px 30px -10px rgba(2, 6, 23, 0.8), 0 0 20px -5px rgba(59, 130, 246, 0.1);
-}
-
-.ziki-panel-glow {
-  background: radial-gradient(circle at top, rgba(37, 99, 235, 0.15), rgba(11, 19, 41, 0.95)), #0b1329;
-  border: 1px solid rgba(96, 165, 250, 0.35);
-  box-shadow: 0 0 35px -5px rgba(37, 99, 235, 0.25), 0 20px 40px -15px rgba(0, 0, 0, 0.8);
-}
-
-.glow-blue {
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
-}
-
-.glow-emerald {
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
-}
-
-.glow-amber {
-  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-}
-
-.glow-purple {
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
-}
-
-/* Futuristic grid overlay background */
-.cyber-grid {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-}
-
-/* Subtle holographic pulse */
-@keyframes shield-pulse {
-  0%, 100% {
-    opacity: 0.85;
-    transform: scale(1);
-    filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5));
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.025);
-    filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.85));
-  }
-}
-
-.animate-shield-pulse {
-  animation: shield-pulse 3s ease-in-out infinite;
-}
-
-/* Data stream animation */
-@keyframes data-flow {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-.animate-data-flow {
-  animation: data-flow 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-/* Float animation */
-@keyframes soft-float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(0.5deg);
-  }
-}
-
-.animate-soft-float {
-  animation: soft-float 4.5s ease-in-out infinite;
-}
-
-/* Gentle eye visor blink */
-@keyframes visor-blink {
-  0%, 92%, 100% {
-    opacity: 1;
-    transform: scaleY(1);
-  }
-  95% {
-    opacity: 0.2;
-    transform: scaleY(0.1);
-  }
-}
-
-.animate-visor-blink {
-  animation: visor-blink 4s ease-in-out infinite;
-}
-
-/* Holographic beam sweep */
-@keyframes holographic-sweep {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-hologram-sweep {
-  background: linear-gradient(
-    90deg,
-    rgba(56, 189, 248, 0) 0%,
-    rgba(56, 189, 248, 0.2) 50%,
-    rgba(56, 189, 248, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: holographic-sweep 3s ease-in-out infinite;
 }
 
 /* Fade in up entrance */
@@ -161,46 +29,9 @@
   animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Scale in entrance for modals / cards */
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Energy node pulse */
-@keyframes energy-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.6);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(56, 189, 248, 0);
-  }
-}
-
-.animate-energy-pulse {
-  animation: energy-pulse 2s infinite;
-}
-
 /* Respect user preferences for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .animate-shield-pulse,
-  .animate-data-flow,
-  .animate-soft-float,
-  .animate-visor-blink,
-  .animate-hologram-sweep,
-  .animate-energy-pulse,
   .animate-fade-in-up,
-  .animate-scale-in,
   .animate-spin,
   .animate-pulse {
     animation: none !important;

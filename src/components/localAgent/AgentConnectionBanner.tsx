@@ -51,9 +51,6 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight font-mono">
                 {session.agentName}
               </h2>
-              <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-700">
-                {session.version}
-              </span>
               <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-semibold">
                 PID: {session.cliPid}
               </span>
@@ -63,25 +60,15 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
               <span className="flex items-center gap-1.5 font-mono font-medium">
                 <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                 <span className={isConnected ? 'text-emerald-700 font-semibold' : 'text-amber-700'}>
-                  {isSimulatingReconnect ? 'Reconnecting to local daemon...' : isConnected ? 'Connected via Terminal Socket' : 'Session Paused'}
+                  {isSimulatingReconnect ? 'Reconnecting…' : isConnected ? 'Connected via Terminal Socket' : 'Session Paused'}
                 </span>
               </span>
-              <span>·</span>
-              <span className="font-mono text-slate-600">Port :{session.terminalPort}</span>
-              <span>·</span>
-              <span className="font-mono text-blue-600 font-semibold">{session.pingMs}ms latency</span>
-              <span>·</span>
-              <span className="text-slate-500">Uptime: {session.connectionUptime}</span>
             </div>
           </div>
         </div>
 
-        {/* Right: Interactive Connection Toggle & Prototype Badge */}
+        {/* Right: Interactive Connection Toggle */}
         <div className="flex flex-wrap items-center gap-2.5">
-          <div className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 font-semibold hidden sm:inline-block">
-            Design Demonstration
-          </div>
-
           <button
             type="button"
             onClick={onToggleConnection}
@@ -95,7 +82,7 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
             {isSimulatingReconnect ? (
               <>
                 <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-600" />
-                <span>Syncing daemon...</span>
+                <span>Syncing…</span>
               </>
             ) : isConnected ? (
               <>
@@ -120,7 +107,6 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2.5">
           <FolderGit2 className="w-4 h-4 text-blue-600 shrink-0" />
           <div className="truncate">
-            <span className="text-[10px] font-mono text-slate-400 block uppercase font-medium">Local Workspace</span>
             <span className="font-mono text-slate-800 text-xs font-semibold truncate block" title={session.localPath}>
               {session.localPath}
             </span>
@@ -131,7 +117,6 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2.5">
           <GitBranch className="w-4 h-4 text-indigo-600 shrink-0" />
           <div className="truncate">
-            <span className="text-[10px] font-mono text-slate-400 block uppercase font-medium">Target Branch</span>
             <span className="font-mono text-indigo-700 text-xs font-semibold truncate block">
               {session.activeBranch}
             </span>
@@ -142,7 +127,6 @@ export const AgentConnectionBanner: React.FC<AgentConnectionBannerProps> = ({
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-2.5">
           <Activity className="w-4 h-4 text-emerald-600 shrink-0 animate-pulse" />
           <div className="truncate">
-            <span className="text-[10px] font-mono text-slate-400 block uppercase font-medium">Active Task in Terminal</span>
             <span className="text-slate-800 text-xs font-medium truncate block" title={session.currentTask}>
               {session.currentTask}
             </span>

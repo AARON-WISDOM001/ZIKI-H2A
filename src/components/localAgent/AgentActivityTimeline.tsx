@@ -43,18 +43,13 @@ export const AgentActivityTimeline: React.FC<AgentActivityTimelineProps> = ({
           <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600">
             <Radio className="w-4 h-4" />
           </div>
-          <div>
-            <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
-              Agent Activity Timeline
-            </h3>
-            <p className="text-[11px] text-slate-500">
-              Synchronized log of local terminal actions and human directives
-            </p>
-          </div>
+          <h3 className="text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
+            Activity
+          </h3>
         </div>
 
         <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600">
-          Live Stream
+          Live
         </span>
       </div>
 
@@ -93,7 +88,7 @@ export const AgentActivityTimeline: React.FC<AgentActivityTimelineProps> = ({
       {/* Prototype Footer Note */}
       <div className="pt-3 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-1.5 font-mono">
         <Clock className="w-3.5 h-3.5 text-slate-400" />
-        <span>Design simulation only. Terminal commands and events are mocked locally.</span>
+        <span>Demo — events are mocked.</span>
       </div>
 
     </div>
